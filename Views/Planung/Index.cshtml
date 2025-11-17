@@ -1,0 +1,165 @@
+﻿@using MaschinenDataein.Models.ModelView
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //ViewData["actionForm"] = "Index";
+    ViewData["Title"] = "Produktionsplanung";
+    string tableId = "tblPlanung";
+}
+@model PlanungModelView
+<div class="modern-container">
+    <div class="page-header">
+        <h1 class="page-title">Produktionsplanung</h1>
+        <p class="page-subtitle">Erfassung von Produktionszeiten</p>
+
+        <div class="button-group no-print">
+            <button form="planungForm" type="submit" class="btn-modern btn-primary-modern"> Speichern</button>
+            @*<button type="button" class="btn-modern btn-primary-modern" onclick="window.print()"><i class="fas fa-print"></i> Drucken</button>
+                <button type="button" class="btn-modern btn-warning-modern" onclick="resetForm()"><i class="fas fa-undo"></i> Zurücksetzen</button>*@
+        </div>
+    </div>
+    @*<form id="planungForm"  action="/Planung/Save"  method="post">
+        <div class="button-group no-print">
+            <button form="planungForm" type="submit" class="btn-modern btn-primary-modern"> Speichern</button>
+        </div>
+        <div class="section-card">
+            <div class="section-header">
+                <h3 class="section-title"><i class="fas fa-info-circle"></i> Grunddaten</h3>
+            </div>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="form-group-modern">
+                        <label class="form-label-modern"> Datum *</label>
+                        @Html.TextBoxFor(m => m.Datum, "{0:d MMM yyyy}", new { @class = "form-control", type = "date" })
+                    </div>
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="form-group-modern">
+                        <label class="form-label-modern"> Maschine *</label>
+                        @Html.DropDownListFor(m => m.MaschinenID, (IEnumerable<SelectListItem>)(ViewBag.Maschinen ?? new List<SelectListItem>()), new { @class = "form-select" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group-modern">
+
+                        <label class="form-label-modern"> Personal Soll</label>
+                        @Html.TextBoxFor(m => m.Personalsoll, new { @class = "form-control", type = "number" })
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group-modern">
+                        <label class="form-label-modern">Mitarbeiternamen</label>
+                        @Html.TextAreaFor(m => m.Personalnamen, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>*@
+    <form asp-action="Save"  asp-controller="Planung" id="planungForm" method="post">
+        <div class="section-card">
+            <div class="section-header">
+                <h3 class="section-title"><i class="fas fa-info-circle"></i> Grunddaten</h3>
+            </div>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="form-group-modern">
+                        <label class="form-label-modern"> Datum *</label>
+                        @Html.TextBoxFor(m => m.GrunddatenModelView.Datum, "{0:d MMM yyyy}", new { @class = "form-control", type = "date" })
+                    </div>
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="form-group-modern">
+                        <label class="form-label-modern"> Maschine *</label>
+                        @Html.DropDownListFor(m => m.GrunddatenModelView.MaschinenID, (IEnumerable<SelectListItem>)(ViewBag.Maschinen ?? new List<SelectListItem>()), new { @class = "form-select" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group-modern">
+
+                        <label class="form-label-modern"> Personal Soll</label>
+                        @Html.TextBoxFor(m => m.GrunddatenModelView.Personalsoll, new { @class = "form-control", type = "number" })
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group-modern">
+                        <label class="form-label-modern">Mitarbeiternamen</label>
+                        @Html.TextAreaFor(m => m.GrunddatenModelView.Personalnamen, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-card">
+            <div class="section-header">
+                <h3 class="section-title"><i class="fas fa-industry"></i> Produktionserfassung</h3>
+            </div>
+            <div class="table-responsive-modern">
+                <table class="table table-modern" id="@tableId">
+                    <thead>
+                        <tr>
+                            <th>Artikel</th>
+                            <th>Sollmenge</th>
+                            <th>Start</th>
+                            <th>Ende</th>
+                            <th>Pause (Min)</th>
+                            <th>MHD</th>
+                            <th>Kartons</th>
+                            <th>Personal Ist</th>
+                            <th>Fertigmenge</th>
+                            <th class="no-print">
+                                <a class="addRow btn btn-sm">
+                                    Plus
+                                </a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        @if (Model.ProduktionserfassungModelViews != null && Model.ProduktionserfassungModelViews.Count > 0)
+                        {
+                            @for (int i = 0; i < Model.ProduktionserfassungModelViews.Count; i++)
+                            {
+                                string styleClass = "";
+                                @if(i==0){ styleClass = "display:none"; }
+                                <tr id="@tableId-tr[@i]" style="@styleClass">
+                                    <td>@Html.TextBoxFor(m => m.ProduktionserfassungModelViews[i].Artikel, new { @class = "form-control-modern" })</td>
+                                    <td>@Html.TextBoxFor(m => m.ProduktionserfassungModelViews[i].Sollmenge, new { @class = "form-control-modern", type = "number" })</td>
+                                    <td>@Html.TextBoxFor(m => m.ProduktionserfassungModelViews[i].Starten, new { @class = "form-control-modern", type = "time" })</td>
+                                    <td>@Html.TextBoxFor(m => m.ProduktionserfassungModelViews[i].Stoppen, new { @class = "form-control-modern", type = "time" })</td>
+                                    <td>@Html.TextBoxFor(m => m.ProduktionserfassungModelViews[i].Pause, new { @class = "form-control-modern", type = "time" })</td>
+                                    <td>@Html.TextBoxFor(m => m.ProduktionserfassungModelViews[i].MHD, new { @class = "form-control-modern", type = "Date" })</td>
+                                    <td>@Html.TextBoxFor(m => m.ProduktionserfassungModelViews[i].Kartonsanzahl, new { @class = "form-control-modern", type = "number" })</td>
+                                    <td>@Html.TextBoxFor(m => m.ProduktionserfassungModelViews[i].PersonalIst, new { @class = "form-control-modern", type = "number" })</td>
+                                    <td>@Html.TextBoxFor(m => m.ProduktionserfassungModelViews[i].Fertigware, new { @class = "form-control-modern", type = "number" })</td>
+
+                                    <td class="no-print text-end">
+                                        <button type="button" class="btn btn-sm btn-outline-danger js-del-row"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </form>
+        
+</div>
+<script src="/jquery/Js/table-row.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        clickAddRow("addRow");
+    });
+</script>

@@ -1,0 +1,45 @@
+﻿@using MaschinenDataein.Models.Data
+@model List<Maschinenprogrammen>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"]="Programmen";
+    ViewData["actionForm"]="Data";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4 text-center">Programmen</h1>
+
+    <!-- Filterformular -->
+    @await Html.PartialAsync("_PartialFilter")
+
+    <!-- Tabelle -->
+    @if (Model != null && Model.Count > 0)
+    {
+        <table class="table table-bordered table-striped table-hover shadow">
+            <thead class="table-dark">
+                <tr>            
+                    <th>Maschine</th>
+                    <th>PRnummer</th>
+                    <th>PR-Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Maschine?.Bezeichnung</td>
+                        <td>@item.PRnummer</td>
+                        <td>@item.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            <strong>ℹ️ Bitte setzen Sie einen Filter, um die Programmen anzuzeigen.</strong>
+        </div>
+    }
+</div>

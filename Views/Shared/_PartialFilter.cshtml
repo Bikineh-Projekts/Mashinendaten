@@ -1,0 +1,40 @@
+﻿@using MaschinenDataein.Models.ModelView
+@{
+    // Sicheres Fallback für das Filtermodell
+    FilterModelView filterModelView = ViewBag.FilterView as FilterModelView;
+
+    // Fallback-Controllername, falls nicht gesetzt
+    string controllerName = filterModelView.ControllerName;
+}
+
+@if (filterModelView != null)
+{
+    <form asp-action="Filter" asp-controller="@filterModelView.ControllerName" method="post">
+        @Html.Hidden("ActionForm", filterModelView.ActionForm ?? "Index")
+        @Html.Hidden("ControllerName", filterModelView.ControllerName)
+
+        <div class="row">
+            <div class="col-md-4">
+                <label for="maschinenId" class="form-label">Maschinenauswahl</label>
+                @Html.DropDownList("MaschinenId",
+                         (IEnumerable<SelectListItem>)(ViewBag.Maschinen ?? new List<SelectListItem>()),
+                         new { @class = "form-select" })
+            </div>
+
+            <div class="col-md-4">
+                <label for="DatumVon" class="form-label">Startdatum</label>
+                <input type="date" name="DatumVon" class="form-control" value="@filterModelView.DatumVon.ToString("yyyy-MM-dd")">
+            </div>
+
+            <div class="col-md-4">
+                <label for="DatumBis" class="form-label">Enddatum</label>
+                <input type="date" name="DatumBis" class="form-control" value="@filterModelView.DatumBis.ToString("yyyy-MM-dd")">
+            </div>
+        </div>
+
+        <div class="mt-3 text-end">
+            <button type="submit" class="btn btn-primary">Filtern</button>
+            <a href="@Url.Action("Index", controllerName)" class="btn btn-secondary">Zurücksetzen</a>
+        </div>
+    </form>
+}

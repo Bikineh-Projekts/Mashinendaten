@@ -1,0 +1,124 @@
+﻿@using MaschinenDataein.Models.ModelView
+@model PlanungModelView
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["actionForm"] = "Index";
+    ViewData["Title"] = "Produktionsplanung";
+}
+
+
+<div class="modern-container">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert-modern alert-success">
+            <i class="fas fa-check-circle"></i> @TempData["Success"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert-modern alert-danger">
+            <i class="fas fa-exclamation-triangle"></i> @TempData["Error"]
+        </div>
+    }
+
+    @*<form asp-controller="Planung" asp-action="Speichern" method="post" id="planungForm">
+        <div class="page-header">
+            <h1 class="page-title">Produktionsplanung</h1>
+            <p class="page-subtitle">Erfassung von Produktionszeiten</p>
+
+            <div class="button-group no-print">
+                <button form="planungForm" type="submit" class="btn-modern btn-primary-modern"> Speichern</button>
+                @*<button type="button" class="btn-modern btn-primary-modern" onclick="window.print()"><i class="fas fa-print"></i> Drucken</button>
+                <button type="button" class="btn-modern btn-warning-modern" onclick="resetForm()"><i class="fas fa-undo"></i> Zurücksetzen</button>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-header">
+                <h3 class="section-title"><i class="fas fa-info-circle"></i> Grunddaten</h3>
+            </div>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="form-group-modern">
+                        <label asp-for="Item1.Datum" class="form-label-modern"><i class="fas fa-calendar"></i> Datum *</label>
+                        @Html.TextBoxFor(m => m.GrunddatenModelView.Datum, "{0:d MMM yyyy}", new { @class = "form-control", type = "date" })
+                    </div>
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="form-group-modern">
+                        <label asp-for="Item1.MaschinenID" class="form-label-modern"><i class="fas fa-cogs"></i> Maschine *</label>
+                        @Html.DropDownListFor(m => m.GrunddatenModelView.MaschinenID, (IEnumerable<SelectListItem>)(ViewBag.Maschinen ?? new List<SelectListItem>()), new { @class = "form-select" })
+                        <span asp-validation-for="Item1.MaschinenID" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group-modern">
+
+                        <label asp-for="Item1.Personalsoll" class="form-label-modern"><i class="fas fa-users"></i> Personal Soll</label>
+                        @Html.TextBoxFor(m => m.GrunddatenModelView.Personalsoll, new { @class = "form-control", type = "number" })
+                        <span asp-validation-for="Item1.Personalsoll" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group-modern">
+                        <label asp-for="Item1.Personalnamen" class="form-label-modern"><i class="fas fa-user-friends"></i> Mitarbeiternamen</label>
+                        @Html.TextAreaFor(m => m.GrunddatenModelView.Personalnamen, new { @class = "form-control"})
+                        <span asp-validation-for="Item1.Personalnamen" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-header">
+                <h3 class="section-title"><i class="fas fa-industry"></i> Produktionserfassung</h3>
+            </div>
+
+            <div class="button-group no-print mb-3">
+                <button type="button" class="btn-modern btn-success-modern js-add-prod">
+                    <i class="fas fa-plus"></i> Produktionszeile hinzufügen
+                </button>
+            </div>
+
+            
+    </form>
+</div>
+
+@section Scripts {
+    <template id="tplRow">
+        <tr>
+            <td><input name="Model.ProduktionserfassungModelViews[__idx__].Artikel" data-field="Artikel" class="form-control-modern" /></td>
+            <td><input name="Model.ProduktionserfassungModelViews[__idx__].Sollmenge" data-field="Sollmenge" class="form-control-modern" type="number" /></td>
+            <td><input name="Model.ProduktionserfassungModelViews[__idx__].Starten" data-field="Starten" class="form-control-modern" type="time" /></td>
+            <td><input name="Model.ProduktionserfassungModelViews[__idx__].Stoppen" data-field="Stoppen" class="form-control-modern" type="time" /></td>
+            <td><input name="Model.ProduktionserfassungModelViews[__idx__].Pause" data-field="Pause" class="form-control-modern" type="number" /></td>
+            <td><input name="Model.ProduktionserfassungModelViews[__idx__].MHD" data-field="MHD" class="form-control-modern" type="date" /></td>
+            <td><input name="Model.ProduktionserfassungModelViews[__idx__].Kartonsanzahl" data-field="Kartonsanzahl" class="form-control-modern" /></td>
+            <td><input name="Model.ProduktionserfassungModelViews[__idx__].PersonalIst" data-field="PersonalIst" class="form-control-modern" type="number" /></td>
+            <td><input name="Model.ProduktionserfassungModelViews[__idx__].Fertigware" data-field="Fertigware" class="form-control-modern" type="number" /></td>
+            <td class="no-print text-end"><button type="button" class="btn btn-sm btn-outline-danger js-del-row"><i class="fas fa-trash"></i></button></td>
+        </tr>
+    </template>
+
+    <script>
+        const config = {
+            path: "~/jquery/JS/Planung.js"
+        };
+
+        const script = document.createElement('script');
+        script.src = config.path;
+        script.setAttribute('asp-append-version', 'true');
+        document.body.appendChild(script);
+    </script>
+
+    <partial name="_ValidationScriptsPartial" />
+    *@
+}

@@ -1,0 +1,171 @@
+﻿@using MaschinenDataein.Controllers
+@using MaschinenDataein.Models.ModelView
+@using MaschinenDataein.Helper
+@model DashboardModelView
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["actionForm"] = "Index";
+}
+
+<h2 class="text-center mt-4 mb-4">Aktuelle-Übersicht</h2>
+
+@if (Model != null)
+{
+    <form asp-action="Index" asp-controller="Home" method="post">
+        <button id="reload" type="submit" class="btn btn-primary">Reload</button>
+    </form>
+
+    <div class="table-responsive">
+        <h3>Programme</h3>
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Maschine</th>
+                    <th>PR-Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ProgrammenList)
+                {
+                    <tr class="text-center">
+                        <td>@item.Maschine?.Bezeichnung</td>
+                        <td>@item.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-responsive">
+        <h3>Leistungsdaten</h3>
+        @await Html.PartialAsync("_LeistungsdatenTable", Model.LeistungsDatenList)
+    </div>
+
+    <div class="table-responsive">
+        <h3>Abzugsdaten</h3>
+        @await Html.PartialAsync("_AbzugsdatenTable", Model.AbzugsDatenList)
+    </div>
+
+    <div class="table-responsive">
+        <h3>Temperaturdaten</h3>
+        @await Html.PartialAsync("_TemperaturdatenTable", Model.TemperaturDatenList)
+    </div>
+
+    <div class="table-responsive">
+        <h3>Alarmdaten</h3>
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Zeitstempel</th>
+                    <th>Maschine</th>
+                    <th>Meldung</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.AlarmDatenList)
+                {
+                    var aktiveMeldungen = new List<string>();
+
+                    for (int i = 1; i <= 94; i++)
+                    {
+                        var prop = item.GetType().GetProperty($"AM{i}");
+                        if (prop != null)
+                        {
+                            var value = prop.GetValue(item);
+                            if (value is bool boolValue && boolValue)
+                            {
+                                if (AlarmnamenHelper.Alarmnamen.TryGetValue(i, out var meldung))
+                                {
+                                    aktiveMeldungen.Add(meldung);
+                                }
+                                else
+                                {
+                                    aktiveMeldungen.Add($"Unbekannter Alarm {i}");
+                                }
+                            }
+                        }
+                    }
+
+                    <tr class="text-center">
+                        <td>@item.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>@item.Maschine?.Bezeichnung</td>
+                        <td>
+                            @if (aktiveMeldungen.Any())
+                            {
+                                @string.Join(", ", aktiveMeldungen)
+                            }
+                            else
+                            {
+                                <span class="text-muted">Keine</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="table-responsive">
+        <h3>Zustandsdaten</h3>
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Zeitstempel</th>
+                    <th>Maschine</th>
+                    <th>Meldung</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ZustandsDatenList)
+                {
+                    <tr class="text-center">
+                        <td>@item.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>@item.Maschine?.Bezeichnung</td>
+                        <td>@item.Zustandsmeldung?.Meldung</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-responsive">
+        <h3>Störungsdaten</h3>
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Zeitstempel</th>
+                    <th>Maschine</th>
+                    <th>Meldung</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.StoerungsDatenList)
+                {
+                    <tr class="text-center">
+                        <td>@item.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>@item.Maschine?.Bezeichnung</td>
+                        <td>@item.Stoerungsmeldung?.Meldung</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning text-center">
+        ❌ Keine Daten verfügbar
+    </div>
+}
+
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        console.log("document loaded");
+        setInterval(clickReload, 60000); // Alle 60 Sekunden Reload
+    });
+
+    function clickReload() {
+        $('#reload').click();
+    }
+</script>
