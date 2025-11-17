@@ -1,0 +1,274 @@
+<!DOCTYPE html >
+<html lang="en" >
+<head >
+<meta charset="UTF-8" >
+<meta name="viewport" content="width=device-width, initial-scale=1.0" >
+<title > Beispiel</title >
+<style >
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+}
+
+:root {
+    --primary-blue: #0ea5e9;
+    --primary-blue-dark: #0369a1;
+    --success-green: #22c55e;
+    --success-green-dark: #15803d;
+    --warning-orange: #f97316;
+    --warning-orange-dark: #b45309;
+    --card-radius: 12px;
+    --group-radius: 16px;
+}
+
+.modern-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.page-header {
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+    color: white;
+    padding: 2rem;
+    border-radius: var(--group-radius);
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(14,165,233,.25);
+}
+
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 0 .5rem 0;
+}
+
+.page-subtitle {
+    opacity: .9;
+    margin: 0;
+}
+
+.btn-modern {
+    padding: .75rem 1.25rem;
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    text-decoration: none;
+    transition: all .2s ease;
+    cursor: pointer;
+}
+
+.btn-primary-modern {
+    background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(14,165,233,.25);
+}
+
+    .btn-primary-modern:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(14,165,233,.35);
+        color: #fff;
+    }
+
+.btn-success-modern {
+    background: linear-gradient(135deg, var(--success-green), var(--success-green-dark));
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(34,197,94,.25);
+}
+
+    .btn-success-modern:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(34,197,94,.35);
+        color: #fff;
+    }
+
+.btn-warning-modern {
+    background: linear-gradient(135deg, var(--warning-orange), var(--warning-orange-dark));
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(249,115,22,.25);
+}
+
+    .btn-warning-modern:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(249,115,22,.35);
+        color: #fff;
+    }
+
+.section-card {
+    background: #fff;
+    border-radius: var(--card-radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    border: 1px solid rgba(0,0,0,.05);
+}
+
+.section-header {
+    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    border-left: 4px solid var(--primary-blue);
+    padding: 1rem;
+    margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+    border-radius: var(--card-radius) var(--card-radius) 0 0;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: #1e293b;
+}
+
+.table-modern {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    box-shadow: 0 1px 6px rgba(0,0,0,.1);
+}
+
+    .table-modern thead th {
+        background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+        font-weight: 600;
+        padding: 1rem .75rem;
+        border-bottom: 2px solid var(--primary-blue);
+        white-space: nowrap;
+        font-size: .875rem;
+        color: #334155;
+    }
+
+    .table-modern tbody td {
+        padding: .75rem;
+        border-bottom: 1px solid #e2e8f0;
+        vertical-align: middle;
+    }
+
+    .table-modern tbody tr:hover {
+        background: #f8fafc;
+    }
+
+.form-group-modern {
+    margin-bottom: 1.25rem;
+}
+
+.form-label-modern {
+    display: block;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: .5rem;
+    font-size: .875rem;
+}
+
+.form-control-modern {
+    width: 100%;
+    padding: .75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: .875rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+    .form-control-modern:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(14,165,233,.1);
+    }
+
+.alert-modern {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background: #d1fae5;
+    border-color: #10b981;
+    color: #065f46;
+}
+
+.alert-danger {
+    background: #fee2e2;
+    border-color: #ef4444;
+    color: #991b1b;
+}
+
+.button-group {
+    display: flex;
+    gap: .75rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.input-group {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
+
+.input-sm {
+    max-width: 120px;
+}
+
+@@media (max-width: 768px) {
+    .table-responsive-modern {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .button-group {
+        justify-content: center;
+    }
+}
+
+@@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .section-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
+
+</style >
+</head >
+<body >
+<div class="container" >
+<h1 > Beispielseite</h1 >
+<p > Dies ist ein Beispiel für eine Seite mit einem festen Footer.</p >
+</div >
+
+<footer class="footer" >
+&copy; 2025 MaschinenDataein. Alle Rechte vorbehalten.
+</footer >
+</body >
+</html >
